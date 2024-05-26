@@ -32,4 +32,8 @@ class Company extends Model
         return $this->hasMany(Followup::class, 'id_company');
     }
 
+    public function recruitment(){
+        return $this->hasMany(Recruitment::class, 'id_company');
+    }
+
 }

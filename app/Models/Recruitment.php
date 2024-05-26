@@ -27,4 +27,13 @@ class Recruitment extends Model
         return 'RC' . $formattedCodeNumber;
     }
 
+    public function detail(){
+        return $this->hasMany(Detail::class, 'code','code');
+    }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'id_company');
+    }
+
 }

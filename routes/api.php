@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\API\ClassesAPIController;
 use App\Http\Controllers\API\CompanyAPIController;
+use App\Http\Controllers\API\DetailAPIController;
 use App\Http\Controllers\API\FollowupAPIController;
 use App\Http\Controllers\API\MajorAPIController;
+use App\Http\Controllers\API\RecruitmentAPIController;
 use App\Http\Controllers\API\StudentAPIController;
 use App\Http\Controllers\CompanyController;
 use Illuminate\Http\Request;
@@ -29,4 +31,7 @@ Route::get('/major', [MajorAPIController::class, 'get_all'])->name('major.get');
 Route::get('/classes', [ClassesAPIController::class, 'get_all'])->name('classes.get');
 Route::get('/student', [StudentAPIController::class, 'get_all'])->name('student.get');
 Route::get('/followup', [FollowupAPIController::class, 'get_all'])->name('followup.get');
+Route::get('/recruitment', [RecruitmentAPIController::class, 'get_all'])->name('recruitment.get');
+Route::get('/recruitment/{id}', [RecruitmentAPIController::class, 'get_id'])->name('recruitment.get');
+Route::get('/detail/{id}', [DetailAPIController::class, 'get_id'])->name('detail.get');
 Route::get('/followup/{id}', [FollowupAPIController::class, 'get_id'])->name('followup.get');

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DetailController;
 use App\Http\Controllers\FollowupController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\ProfileController;
@@ -52,6 +53,7 @@ Route::resource('classes', ClassesController::class)->middleware(['auth']);
 Route::resource('student', StudentController::class)->middleware(['auth']);
 Route::resource('followup', FollowupController::class)->middleware(['auth']);
 Route::resource('recruitment', RecruitmentController::class)->middleware(['auth']);
+Route::resource('detail', DetailController::class)->middleware(['auth']);
 
 Route::get('/student/prodi/{id}', [StudentController::class, 'getprodi'])->middleware(['auth']);
 Route::get('/company/company_name/{id}', [CompanyController::class, 'getcompany'])->middleware(['auth']);

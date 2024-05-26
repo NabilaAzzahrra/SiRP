@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use App\Models\Company;
+use App\Models\Detail;
 use App\Models\Recruitment;
 use App\Models\Student;
 use Illuminate\Http\Request;
@@ -79,9 +80,27 @@ class RecruitmentController extends Controller
 
         Recruitment::create($repositories);
 
+        $code = $request->input('kode');
+        $students = $request->input('student', []);
+        $nims = $request->input('nim', []);
+        $classes = $request->input('classes', []);
+
+        foreach ($students as $index => $student) {
+            $dataa = [
+                'code' => $code,
+                'nim' => $student,
+                'result' => "BELUM",
+                'status' => "KANDIDAT",
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+            Detail::create($dataa);
+        }
+
         return redirect()
             ->route('recruitment.index')
             ->with('message', 'Data Recruitment Sudah ditambahkan');
+
     }
 
     /**
@@ -92,7 +111,16 @@ class RecruitmentController extends Controller
      */
     public function show($id)
     {
-        //
+        $company = Company::all();
+        $recruitment = Recruitment::where('code', $id)->first();
+        $detail = Detail::where('code', $id)->first();
+        $student = Student::all();
+        return view('recruitment.candidat', compact('detail'))->with([
+            'company' => $company,
+            'recruitment' => $recruitment,
+            'detail' => $detail,
+            'student' => $student,
+        ]);
     }
 
     /**
@@ -115,7 +143,34 @@ class RecruitmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate(
+            [
+                'position_required' => 'required',
+                'qualification' => 'required',
+            ],
+            [
+                'position_required.required' => 'Posisi tidak boleh kosong',
+                'qualification.required' => 'Kualifikasi tidak boleh kosong',
+            ],
+        );
+
+        $data = [
+            'position_required' => $request->input('position_required'),
+            'qualification' => $request->input('qualification'),
+        ];
+
+        $recruitment = Recruitment::findOrFail($id);
+
+        if ($recruitment) {
+            $recruitment->update($data);
+            return redirect()
+                ->route('recruitment.index')
+                ->with('message', 'Data Lowongan Sudah diupdate');
+        } else {
+            return redirect()
+                ->route('recruitment.index')
+                ->with('error', 'Data Lowongan tidak ditemukan');
+        }
     }
 
     /**
@@ -126,7 +181,8 @@ class RecruitmentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $recruitment = Recruitment::findOrFail($id);
+        $recruitment->delete();
+        return back()->with('message_delete','Data Lowongan Sudah dihapus');
     }
-    
 }

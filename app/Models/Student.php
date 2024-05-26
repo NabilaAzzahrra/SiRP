@@ -48,4 +48,9 @@ class Student extends Model
     {
         return $this->belongsTo(Classes::class, 'id_class', 'id');
     }
+
+    public function detail()
+    {
+        return $this->hashMany(Detail::class, 'nim', 'nim');
+    }
 }

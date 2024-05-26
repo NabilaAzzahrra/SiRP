@@ -315,7 +315,7 @@
         rowCount++;
         table.row.add([
             rowCount,
-            `<select class="js-example-placeholder-single js-states form-control w-full m-6" name="student" data-placeholder="Pilih Mahasiswa" onchange="return getstudent()" id="student${rowCount}">
+            `<select class="js-example-placeholder-single js-states form-control w-full m-6" name="student[]" data-placeholder="Pilih Mahasiswa" onchange="return getstudent()" id="student${rowCount}">
                 <option value="">Pilih...</option>
                 <?php foreach ($student as $c): ?>
                     <option value="<?= $c->nim ?>"><?= $c->student_name ?></option>
