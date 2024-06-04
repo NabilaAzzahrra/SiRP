@@ -153,7 +153,7 @@
         AOS.init();
     </script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    @stack('scripts');
+    @stack('scripts')
 </body>
 
 </html>

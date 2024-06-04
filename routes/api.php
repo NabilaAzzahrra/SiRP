@@ -33,5 +33,13 @@ Route::get('/student', [StudentAPIController::class, 'get_all'])->name('student.
 Route::get('/followup', [FollowupAPIController::class, 'get_all'])->name('followup.get');
 Route::get('/recruitment', [RecruitmentAPIController::class, 'get_all'])->name('recruitment.get');
 Route::get('/recruitment/{id}', [RecruitmentAPIController::class, 'get_id'])->name('recruitment.get');
+Route::get('/recruitment/{id}', [RecruitmentAPIController::class, 'get_code'])->name('recruitment.get');
+// Route::get('/recruitment/{id}/{code}', [RecruitmentAPIController::class, 'get_idcode'])->name('recruitment.get');
 Route::get('/detail/{id}', [DetailAPIController::class, 'get_id'])->name('detail.get');
+Route::get('/recruitment', [RecruitmentAPIController::class, 'get_report'])->name('detail.get');
+Route::get('/detail', [DetailAPIController::class, 'get_all'])->name('detail.get');
+Route::get('/followup', [FollowupAPIController::class, 'get_report'])->name('detail.get');
+Route::get('/mou', [CompanyAPIController::class, 'get_report'])->name('detail.get');
+Route::get('/detail/{id}/{code}', [DetailAPIController::class, 'get_code'])->name('detail.get');
+Route::get('/detail/{id}/{status}', [DetailAPIController::class, 'get_status'])->name('detail.get');
 Route::get('/followup/{id}', [FollowupAPIController::class, 'get_id'])->name('followup.get');

@@ -137,7 +137,7 @@
                                     onchange="return getcompany()" id="company">
                                     <option value="">Pilih...</option>
                                     @foreach ($company as $c)
-                                        <option value="<?= $c->id ?>">
+                                        <option value="<?= $c->code_company ?>">
                                             <?= $c->company_name ?></option>
                                     @endforeach
                                 </select><br>

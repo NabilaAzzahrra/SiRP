@@ -10,6 +10,7 @@ class Company extends Model
     use HasFactory;
 
     protected $fillable = [
+        'code_company',
         'company_name',
         'sector',
         'company_type',
@@ -33,7 +34,16 @@ class Company extends Model
     }
 
     public function recruitment(){
-        return $this->hasMany(Recruitment::class, 'id_company');
+        return $this->hasMany(Recruitment::class, 'id_company', 'code_company');
+    }
+
+    public static function createCode()
+    {
+        $latestCode = self::orderBy('code_company', 'desc')->value('code_company');
+        $latestCodeNumber = intval(substr($latestCode, 2)); 
+        $nextCodeNumber = $latestCodeNumber ? $latestCodeNumber + 1 : 1; 
+        $formattedCodeNumber = sprintf("%05d", $nextCodeNumber); 
+        return 'CP' . $formattedCodeNumber;
     }
 
 }

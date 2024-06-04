@@ -180,6 +180,9 @@
                     }
                 }, {
                     data: 'code',
+                    render: function(data, type, row) {
+                        return data
+                    }
                 }, {
                     data: 'company',
                     render: function(data, type, row) {
@@ -228,7 +231,7 @@
                                                        <i class="fas fa-edit"></i>
                                                     </button>`;
                         let deleteUrl =
-                            `<button onclick="return recruitmentDelete('${data.id}','${data.position_required}')" class="bg-red-500 hover:bg-bg-red-300 px-3 py-1 rounded-md text-xs text-white"><i class="fas fa-trash"></i></button>`;
+                            `<button onclick="return recruitmentDelete('${data.code}','${data.position_required}')" class="bg-red-500 hover:bg-bg-red-300 px-3 py-1 rounded-md text-xs text-white"><i class="fas fa-trash"></i></button>`;
                         let moreUrl =
                             `<button type="button" data-id="${data.code}" onclick="return recruitmentMore(this)" class="bg-sky-400 hover:bg-bg-sky-400 px-3 py-1 rounded-md text-xs text-white"><i class="fas fa-eye"></i></button>`;
                         return `${editUrl} ${deleteUrl} ${moreUrl}`;
@@ -273,7 +276,7 @@
         const recruitmentDelete = async (id, position_required) => {
             let tanya = confirm(`Apakah anda yakin untuk menghapus lowongan pekerjaan ${position_required} ?`);
             if (tanya) {
-                await axios.post(`/position_required/${id}`, {
+                await axios.post(`/recruitment/${id}`, {
                         '_method': 'DELETE',
                         '_token': $('meta[name="csrf-token"]').attr('content')
                     })
@@ -283,6 +286,7 @@
                     .catch(function(error) {
                         alert('Error deleting record');
                         console.log(error);
+                        console.log(id);
                     });
             }
         }

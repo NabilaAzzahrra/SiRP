@@ -15,4 +15,20 @@ class CompanyAPIController extends Controller
             'company'=>$company,
         ]);
     }
+
+    public function get_report()
+    {
+        $companyQuery = Company::query();
+
+        $dateStart = request('fromDate', 'all');
+        $dateEnd = request('toDate', 'all');
+
+        if ($dateStart !== 'all' && $dateEnd !== 'all') {
+            $companyQuery->whereBetween('created_at', [$dateStart, $dateEnd]);
+        }
+
+        $company = $companyQuery->where('mou','SUDAH')->get();
+
+        return response()->json(['company' => $company]);
+    }
 }

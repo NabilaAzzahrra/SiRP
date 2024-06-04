@@ -19,6 +19,22 @@ class FollowupAPIController extends Controller
         ]);
     }
 
+    public function get_report()
+    {
+        $followup = Followup::query();
+
+        $dateStart = request('fromDate', 'all');
+        $dateEnd = request('toDate', 'all');
+
+        if ($dateStart !== 'all' && $dateEnd !== 'all') {
+            $followup->whereBetween('created_at', [$dateStart, $dateEnd]);
+        }
+
+        $followup = $followup->with(['company'])->get();
+
+        return response()->json(['followup' => $followup]);
+    }
+
     public function get_id($id)
     {
         $followup = Followup::with(['company'])->where('id_company', $id)->get();

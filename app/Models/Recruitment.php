@@ -21,9 +21,9 @@ class Recruitment extends Model
     public static function createCode()
     {
         $latestCode = self::orderBy('code', 'desc')->value('code');
-        $latestCodeNumber = intval(substr($latestCode, 2)); 
-        $nextCodeNumber = $latestCodeNumber ? $latestCodeNumber + 1 : 1; 
-        $formattedCodeNumber = sprintf("%05d", $nextCodeNumber); 
+        $latestCodeNumber = intval(substr($latestCode, 2));
+        $nextCodeNumber = $latestCodeNumber ? $latestCodeNumber + 1 : 1;
+        $formattedCodeNumber = sprintf("%05d", $nextCodeNumber);
         return 'RC' . $formattedCodeNumber;
     }
 
@@ -33,7 +33,11 @@ class Recruitment extends Model
 
     public function company()
     {
-        return $this->belongsTo(Company::class, 'id_company');
+        return $this->belongsTo(Company::class, 'id_company', 'code_company');
     }
 
+    public function detailreport()
+    {
+        return $this->belongsTo(Detail::class, 'code');
+    }
 }

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class CompanyController extends Controller
 {
@@ -30,7 +32,8 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        return view('company.add');
+        $kode_company = Company::createCode();
+        return view('company.add', compact('kode_company'));
     }
 
     /**
@@ -229,6 +232,7 @@ class CompanyController extends Controller
         );
 
         $repositories = [
+            'code_company' => $request->input('code_company'),
             'series' => date('Ymdhis'),
             'title' => $request->input('title'),
             'company_name' => $request->input('company_name'),
@@ -248,6 +252,14 @@ class CompanyController extends Controller
         ];
 
         Company::create($repositories);
+
+        $user = User::create([
+            'name' => $request->input('company_name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('code_company')),
+            'role' => 'P',
+            'id_company' => $request->input('code_company'),
+        ]);
 
         // return back('company.index')->with('message', 'Data Type Sudah ditambahkan');
         return redirect()
@@ -370,7 +382,7 @@ class CompanyController extends Controller
 
     public function getcompany($id)
     {
-        $company = Company::where('id', $id)->first();
+        $company = Company::where('code_company', $id)->first();
 
         return response()->json(['company' => $company]);
     }

@@ -14,12 +14,12 @@
             <span class="sr-only">Info</span>
             <div class="ms-3 text-sm font-medium">
                 Diwajibkan mengisi data yang memiliki tanda <span class="font-semibold hover:no-underline">*
-                    </span> pada inputan.
-            </div>            
+                </span> pada inputan.
+            </div>
         </div>
     </x-slot>
 
-    
+
 
 
     <div class="py-8">
@@ -123,13 +123,17 @@
                 <div class="my-4">
 
                     <div class="flex gap-4 my-4">
+                        <input type="text" id="code_company" name="code_company"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Masukan Kode...." value="{{ $kode_company }}" />
                         <div class="w-full">
                             <label for="company_name"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nama Perusahaan
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="company_name" name="company_name"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Nama Perusahaan...." value="{{ old('company_name') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan Nama Perusahaan...." value="{{ old('company_name') }}">
                             <span class="text-sm m-l text-red-500">{{ $errors->first('company_name') }}</span>
                         </div>
                         <div class="w-full">
@@ -138,7 +142,8 @@
                                     class="text-red-500">*</span></label>
                             <input type="text" id="sector" name="sector"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Bidang Perusahaan...." value="{{ old('sector') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan Bidang Perusahaan...." value="{{ old('sector') }}">
                             <span class="text-sm m-l text-red-500">{{ $errors->first('sector') }}</span>
                         </div>
                     </div>
@@ -150,7 +155,8 @@
                                 Perusahaan</label>
                             <input type="text" id="company_type" name="company_type"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Tipe Perusahaan...." value="{{ old('company_type') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan Tipe Perusahaan...." value="{{ old('company_type') }}">
                         </div>
                         <div class="w-full">
                             <label for="address"
@@ -158,7 +164,8 @@
                                     class="text-red-500">*</span></label>
                             <textarea type="text" id="address" name="address"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Alamat Perusahaan...." value="{{ old('address') }}"></textarea>
+                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Alamat Perusahaan...."
+                                value="{{ old('address') }}"></textarea>
                             <span class="text-sm m-l text-red-500">{{ $errors->first('address') }}</span>
                         </div>
                     </div>
@@ -169,7 +176,8 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kota</label>
                             <input type="text" id="city" name="city"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan City Perusahaan...." value="{{ old('city') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan City Perusahaan...." value="{{ old('city') }}">
                             <span class="text-sm m-l text-red-500">{{ $errors->first('city') }}</span>
                         </div>
                         <div class="w-full">
@@ -177,21 +185,23 @@
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
                             <input type="email" id="email" name="email"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                 placeholder="Isi dengan Email Perusahaan...." value="{{ old('email') }}">
+                                placeholder="Isi dengan Email Perusahaan...." value="{{ old('email') }}">
                         </div>
                         <div class="w-full">
                             <label for="fax"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">FAX</label>
                             <input type="text" id="fax" name="fax"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan FAX Perusahaan...." value="{{ old('fax') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan FAX Perusahaan...." value="{{ old('fax') }}">
                         </div>
                         <div class="w-full">
                             <label for="kode_pos"
                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Kode Pos</label>
                             <input type="text" id="kode_pos" name="kode_pos"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Kode Pos Perusahaan...." value="{{ old('kode_pos') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan Kode Pos Perusahaan...." value="{{ old('kode_pos') }}">
                         </div>
                     </div>
 
@@ -215,7 +225,8 @@
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="pic" name="pic"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Kontak Person Perusahaan...." value="{{ old('pic') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan Kontak Person Perusahaan...." value="{{ old('pic') }}">
                             <span class="text-sm m-l text-red-500">{{ $errors->first('pic') }}</span>
                         </div>
                     </div>
@@ -227,7 +238,9 @@
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="position" name="position"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Jabatan Kontak Person Perusahaan...." value="{{ old('position') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan Jabatan Kontak Person Perusahaan...."
+                                value="{{ old('position') }}">
                             <span class="text-sm m-l text-red-500">{{ $errors->first('position') }}</span>
                         </div>
                         <div class="w-full">
@@ -236,7 +249,8 @@
                                 <span class="text-red-500">*</span></label>
                             <input type="text" id="phone_number" name="phone_number"
                                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                onkeyup="this.value = this.value.toUpperCase()" placeholder="Isi dengan Telepon Perusahaan...." value="{{ old('phone_number') }}">
+                                onkeyup="this.value = this.value.toUpperCase()"
+                                placeholder="Isi dengan Telepon Perusahaan...." value="{{ old('phone_number') }}">
                             <span class="text-sm m-l text-red-500">{{ $errors->first('phone_number') }}</span>
                         </div>
                         <div class="w-full">
@@ -286,7 +300,7 @@
 <script>
     function hiddenAlert() {
         setTimeout(() => {
-           document.getElementById('alert-2').style.display='none';
+            document.getElementById('alert-2').style.display = 'none';
         }, 5000);
     }
     hiddenAlert();

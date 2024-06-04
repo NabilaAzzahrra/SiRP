@@ -93,6 +93,7 @@ class StudentController extends Controller
             'major_high_school' => $request->input('major_high_school'),
             'class_year' => $request->input('class_year'),
             'graduation_year' => $request->input('graduation_year'),
+            'link_berkas' => $request->input('link_berkas'),
         ];
 
         Student::create($repositories);
@@ -185,6 +186,7 @@ class StudentController extends Controller
             'major_high_school' => $request->input('major_high_school'),
             'class_year' => $request->input('class_year'),
             'graduation_year' => $request->input('graduation_year'),
+            'link_berkas' => $request->input('link_berkas'),
         ];
 
         $student = Student::where('nim', $nim)->first();

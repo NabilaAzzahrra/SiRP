@@ -29,4 +29,8 @@ class Detail extends Model
     {
         return $this->belongsTo(Student::class, 'nim', 'nim');
     }
+
+    public function recruitmentreport(){
+        return $this->hasMany(Recruitment::class, 'code','code');
+    }
 }

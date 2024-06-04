@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Classes;
 use App\Models\Company;
 use App\Models\Detail;
+use App\Models\Major;
 use App\Models\Recruitment;
 use App\Models\Student;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class RecruitmentController extends Controller
+class CandidatController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -18,13 +20,12 @@ class RecruitmentController extends Controller
      */
     public function index()
     {
-        $recruitment = Recruitment::all();
-        $classes = Classes::all();
+        $kode_recruitment = Recruitment::createCode();
         $company = Company::all();
-        return view('recruitment')->with([
-            'classes' => $classes,
+        $major = Major::all();
+        return view('company_role.index', compact('kode_recruitment'))->with([
             'company' => $company,
-            'recruitment' => $recruitment,
+            'major' => $major,
         ]);
     }
 
@@ -35,17 +36,7 @@ class RecruitmentController extends Controller
      */
     public function create()
     {
-        $kode_recruitment = Recruitment::createCode();
-        $recruitment = Recruitment::all();
-        $classes = Classes::all();
-        $company = Company::all();
-        $student = Student::all();
-        return view('recruitment.create', compact('kode_recruitment'))->with([
-            'classes' => $classes,
-            'company' => $company,
-            'recruitment' => $recruitment,
-            'student' => $student,
-        ]);
+        //
     }
 
     /**
@@ -58,49 +49,29 @@ class RecruitmentController extends Controller
     {
         $request->validate(
             [
-                'kode' => 'required',
-                'company_name' => 'required',
+                'code' => 'required',
+                'id_company' => 'required',
                 'position_required' => 'required',
                 'qualification' => 'required',
             ],
             [
-                'kode.required' => 'Kode tidak boleh kosong',
-                'company_name.required' => 'Perusahaan tidak boleh kosong',
-                'position_required.required' => 'Posisi tidak boleh kosong',
+                'code.required' => 'Kode tidak boleh kosong',
+                'id_company.required' => 'Id Company tidak boleh kosong',
+                'position_required.required' => 'Perusahaan tidak boleh kosong',
                 'qualification.required' => 'Kualifikasi tidak boleh kosong',
             ],
         );
 
         $repositories = [
-            'code' => $request->input('kode'),
-            'id_company' => $request->input('company_name'),
+            'code' => $request->input('code'),
+            'id_company' => $request->input('id_company'),
             'position_required' => $request->input('position_required'),
             'qualification' => $request->input('qualification'),
         ];
 
         Recruitment::create($repositories);
 
-        $code = $request->input('kode');
-        $students = $request->input('student', []);
-        $nims = $request->input('nim', []);
-        $classes = $request->input('classes', []);
-
-        foreach ($students as $index => $student) {
-            $dataa = [
-                'code' => $code,
-                'nim' => $student,
-                'result' => "BELUM",
-                'status' => "KANDIDAT",
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-            Detail::create($dataa);
-        }
-
-        return redirect()
-            ->route('recruitment.index')
-            ->with('message', 'Data Recruitment Sudah ditambahkan');
-
+        return back()->with('message_delete', 'Data Kelas Sudah dihapus');
     }
 
     /**
@@ -109,13 +80,13 @@ class RecruitmentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, $code)
     {
         $company = Company::all();
-        $recruitment = Recruitment::where('code', $id)->first();
-        $detail = Detail::where('code', $id)->first();
+        $recruitment = Recruitment::where('id', $id)->first();
+        $detail = Detail::where('code', $code)->first();
         $student = Student::all();
-        return view('recruitment.candidat', compact('detail'))->with([
+        return view('company_role.detail', compact('detail'))->with([
             'company' => $company,
             'recruitment' => $recruitment,
             'detail' => $detail,
@@ -164,11 +135,11 @@ class RecruitmentController extends Controller
         if ($recruitment) {
             $recruitment->update($data);
             return redirect()
-                ->route('recruitment.index')
+                ->route('candidat.index')
                 ->with('message', 'Data Lowongan Sudah diupdate');
         } else {
             return redirect()
-                ->route('recruitment.index')
+                ->route('candidat.index')
                 ->with('error', 'Data Lowongan tidak ditemukan');
         }
     }
@@ -187,6 +158,57 @@ class RecruitmentController extends Controller
         foreach ($details as $key => $detail) {
             $detail->delete();
         }
-        return back()->with('message_delete','Data Lowongan Sudah dihapus');
+        return back()->with('message_delete', 'Data Lowongan Sudah dihapus');
+    }
+
+    public function interview(Request $request, $id)
+    {
+        $request->validate(
+            [
+                'status' => 'required',
+            ],
+            [
+                'status.required' => 'Status tidak boleh kosong',
+            ]
+        );
+
+        $data = [
+            'status' => "INTERVIEW",
+        ];
+
+        $detail = Detail::findOrFail($id);
+
+        if ($detail) {
+            $detail->update($data);
+            return back()->with('message', 'Interview berhasil');
+        } else {
+            return back()->with('message', 'Error saat mengatur interview');
+        }
+    }
+
+    public function tolak(Request $request, $id)
+    {
+        $request->validate(
+            [
+                'status' => 'required',
+            ],
+            [
+                'status.required' => 'Status tidak boleh kosong',
+            ]
+        );
+
+        $data = [
+            'status' => "TOLAK",
+            'information' => "TIDAK TERMASUK PADA KUALIFIKASI",
+        ];
+
+        $detail = Detail::findOrFail($id);
+
+        if ($detail) {
+            $detail->update($data);
+            return back()->with('message', 'Interview berhasil');
+        } else {
+            return back()->with('message', 'Error saat mengatur interview');
+        }
     }
 }

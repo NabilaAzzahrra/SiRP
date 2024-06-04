@@ -41,6 +41,7 @@ return new class extends Migration
             $table->string('major_high_school');
             $table->integer('class_year');
             $table->integer('graduation_year');
+            $table->string('link_berkas');
             $table->timestamps();
         });
     }

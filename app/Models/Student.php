@@ -37,7 +37,8 @@ class Student extends Model
         'high_school', 
         'major_high_school', 
         'class_year', 
-        'graduation_year'
+        'graduation_year',
+        'link_berkas'
     ];
 
     protected $table = 'student';

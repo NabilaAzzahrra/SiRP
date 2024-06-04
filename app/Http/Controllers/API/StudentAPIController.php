@@ -10,7 +10,7 @@ class StudentAPIController extends Controller
 {
     public function get_all()
     {
-        $student = Student::with(['classes'])->get();
+        $student = Student::with(['classes', 'classes.major'])->get();
         return response()->json([
             'student'=>$student,
         ]);

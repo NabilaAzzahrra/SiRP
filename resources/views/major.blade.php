@@ -45,7 +45,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="bg-[#00AEB6] my-4 overflow-hidden w-full shadow-sm rounded-3xl lg:rounded-3xl md:rounded-3xl hover:bg-[#86b9bd] hover:shadow-lg hover:shadow-slate-400">
                 <div class="p-4 text-gray-900 flex">
                     <div class="pr-8">
@@ -65,7 +65,7 @@
                     </div>
                 </div>
             </div>
-       
+
             <div class="bg-[#ECAE30] my-4 overflow-hidden w-full shadow-sm rounded-3xl lg:rounded-3xl md:rounded-3xl hover:bg-[#fac458e5] hover:shadow-lg hover:shadow-slate-400">
                 <div class="p-4 text-gray-900 flex">
                     <div class="pr-8">
@@ -122,7 +122,7 @@
                                     </button>
                                 </div>
                             </form>
-        
+
                         </div>
                     </div>
                 </div>
