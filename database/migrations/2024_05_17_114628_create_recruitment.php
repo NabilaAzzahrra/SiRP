@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('id_company');
             $table->string('position_required');
             $table->text('qualification');
+            $table->text('availability');
             $table->timestamps();
         });
     }

@@ -10,11 +10,34 @@ class CompanyAPIController extends Controller
 {
     public function get_all()
     {
-        $company = Company::all();
-        return response()->json([
-            'company'=>$company,
-        ]);
+        $databaseQuery = Company::query();
+
+        $id = request('account_active', 'all');
+
+        if ($id !== 'all') {
+            $databaseQuery->where('account_active', $id);
+        }
+
+        $company = $databaseQuery->whereHas('user')->with(['user'])->get();
+
+
+        return response()->json(['company' => $company]);
     }
+
+//     public function get_all()
+//     {
+//         $databaseQuery = RegisterByProgram::query();
+
+//         $id = request('id', 'all');
+
+//         if ($id !== 'all') {
+//             $databaseQuery->where('pmb', $id);
+//         }
+
+//         $databases = $databaseQuery->get();
+
+//         return response()->json($databases);
+//     }
 
     public function get_report()
     {

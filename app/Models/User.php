@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'role',
         'id_company',
+        'nim',
     ];
 
     /**
@@ -43,4 +44,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function company()
+    {
+        return $this->hashMany(Company::class, 'account_active', 'id');
+    }
 }

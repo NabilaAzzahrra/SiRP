@@ -8,6 +8,7 @@ use App\Models\Detail;
 use App\Models\Recruitment;
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class RecruitmentController extends Controller
 {
@@ -38,7 +39,7 @@ class RecruitmentController extends Controller
         $kode_recruitment = Recruitment::createCode();
         $recruitment = Recruitment::all();
         $classes = Classes::all();
-        $company = Company::all();
+        $company = Company::where('account_active', Auth::user()->id)->get();
         $student = Student::all();
         return view('recruitment.create', compact('kode_recruitment'))->with([
             'classes' => $classes,

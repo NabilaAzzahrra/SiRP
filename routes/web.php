@@ -8,6 +8,7 @@ use App\Http\Controllers\FollowupController;
 use App\Http\Controllers\GrafikRecruitmentController;
 use App\Http\Controllers\HasilController;
 use App\Http\Controllers\InterviewController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RecruitmentController;
@@ -18,6 +19,13 @@ use App\Http\Controllers\ReportRekapitulasiController;
 use App\Http\Controllers\SerapanController;
 use App\Http\Controllers\StudentController;
 use App\Models\Company;
+use App\Models\Detail;
+use App\Models\GrafikPerusahaan;
+use App\Models\GrafiRecDashboard;
+use App\Models\Recruitment;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,8 +49,67 @@ Route::get('/dashboard', function () {
         'data' => [30, 40, 30],
     ];
     $company = Company::all();
-    return view('dashboard', compact('data', 'company'));
+    $sectors = GrafiRecDashboard::query()->pluck('Bidang')->toArray();
+    $rec = GrafiRecDashboard::query()->pluck('Jumlah_Rekrutmen')->toArray();
+    $posisi = GrafikPerusahaan::query()->where('id_company', Auth::user()->id_company)->pluck('position_required')->toArray();
+    $lolos = GrafikPerusahaan::query()->where('id_company', Auth::user()->id_company)->pluck('passed_candidates')->toArray();
+    // $posisi = DB::table('grafik_perusahaan_month')
+    //         ->select('position_required')
+    //         ->groupBy('position_required')
+    //         ->pluck('position_required')
+    //         ->toArray();
+
+
+    // $posisi = Recruitment::where('id_company', Auth::user()->id_company)
+    //     ->whereMonth('created_at', Carbon::now()->month)
+    //     ->whereYear('created_at', Carbon::now()->year)
+    //     ->pluck('position_required')
+    //     ->toArray();
+    // $hasilRec = Recruitment::where('id_company', Auth::user()->id_company)
+    //     ->left
+    //     ->pluck('result')
+    //     ->where('result','LULUS')
+    //     ->whereMonth('created_at', Carbon::now()->month)
+    //     ->toArray();
+
+    $historyapply = Detail::select('detail.*', 'company.company_name', 'company.code_company', 'recruitment.code', 'recruitment.id_company', 'recruitment.position_required')
+        ->join(
+            DB::raw('(SELECT code, MAX(created_at) as max_created_at
+              FROM detail
+              WHERE nim = "' . Auth::user()->nim . '"
+              GROUP BY code) as latest'),
+            function ($join) {
+                $join->on('detail.code', '=', 'latest.code')
+                    ->on('detail.created_at', '=', 'latest.max_created_at');
+            }
+        )
+        ->join('recruitment', 'detail.code', '=', 'recruitment.code')
+        ->join('company', 'company.code_company', '=', 'recruitment.id_company')
+        ->orderBy('detail.created_at', 'DESC')
+        ->orderBy('detail.code', 'ASC')
+        ->get();
+
+
+    return view('dashboard', compact('data', 'company', 'sectors', 'rec', 'historyapply', 'posisi', 'lolos'));
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Route::get('/dashboard', function () {
+//     $data = [
+//         'labels' => ['< 10 Hari', '10 - 20 Hari', '> 20 Hari'],
+//         'data' => [30, 40, 30],
+//     ];
+//     $company = Company::all();
+//     $companyRecruitments = DB::table('recruitment')
+//         ->join('company', 'recruitment.id_company', '=', 'company.id')
+//         ->select('company.sector', DB::raw('SUM(recruitment.id) as total_recruitment'))
+//         ->groupBy('company.sector')
+//         ->get();
+
+//     $sectors = $companyRecruitments->pluck('sector')->toArray();
+//     $recruitmentCounts = $companyRecruitments->pluck('total_recruitment')->toArray();
+
+//     return view('dashboard', compact('data', 'sectors', 'recruitmentCounts','company'));
+// })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -56,6 +123,7 @@ Route::middleware('auth')->group(function () {
 //         'data' => [30, 40, 30],
 //     ]
 // ]);
+
 Route::resource('company', CompanyController::class)->middleware(['auth']);
 Route::resource('major', MajorController::class)->middleware(['auth']);
 Route::resource('classes', ClassesController::class)->middleware(['auth']);
@@ -72,6 +140,7 @@ Route::resource('reportMou', ReportMouController::class)->middleware(['auth']);
 Route::resource('reportRekapitulasi', ReportRekapitulasiController::class)->middleware(['auth']);
 Route::resource('grafikRecruitment', GrafikRecruitmentController::class)->middleware(['auth']);
 Route::resource('serapan', SerapanController::class)->middleware(['auth']);
+Route::resource('job', JobController::class)->middleware(['auth']);
 
 Route::get('/student/prodi/{id}', [StudentController::class, 'getprodi'])->middleware(['auth']);
 Route::get('/company/company_name/{id}', [CompanyController::class, 'getcompany'])->middleware(['auth']);

@@ -231,6 +231,13 @@ class CompanyController extends Controller
             ],
         );
 
+        $countActive2 = Company::where('account_active', 2)->count();
+        $countActive3 = Company::where('account_active', 3)->count();
+
+        // Menentukan nilai account_active berdasarkan perbandingan
+        $accountActive = ($countActive2 <= $countActive3) ? 2 : 3;
+
+
         $repositories = [
             'code_company' => $request->input('code_company'),
             'series' => date('Ymdhis'),
@@ -249,6 +256,7 @@ class CompanyController extends Controller
             'mou' => $request->input('mou'),
             'kode_pos' => $request->input('kode_pos'),
             'fax' => $request->input('fax'),
+            'account_active' => $accountActive,
         ];
 
         Company::create($repositories);
@@ -377,7 +385,7 @@ class CompanyController extends Controller
     {
         $company = Company::findOrFail($id);
         $company->delete();
-        return back()->with('message_delete','Data Perusahaan Sudah dihapus');
+        return back()->with('message_delete', 'Data Perusahaan Sudah dihapus');
     }
 
     public function getcompany($id)

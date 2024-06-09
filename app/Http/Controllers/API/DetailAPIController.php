@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Detail;
+use App\Models\SerapanBidang;
+use App\Models\SerapanProdi;
 use Illuminate\Http\Request;
 
 class DetailAPIController extends Controller
@@ -20,10 +22,43 @@ class DetailAPIController extends Controller
             $detaiQuery->whereBetween('created_at', [$dateStart, $dateEnd]);
         }
 
-        $detail = $detaiQuery->with(['recruitmentreport','recruitmentreport.company','student', 'student.classes', 'student.classes.major'])->get();
+        $detail = $detaiQuery->with(['recruitmentreport', 'recruitmentreport.company', 'student', 'student.classes', 'student.classes.major'])->get();
 
         return response()->json(['detail' => $detail]);
+    }
 
+    public function get_serapanb()
+    {
+        $detaiQuery = SerapanBidang::query();
+
+        $tahun = request('tahun', 'all');
+
+        if ($tahun !== 'all') {
+            $detaiQuery->where('Tahun', $tahun);
+        }
+
+        $detail = $detaiQuery->get();
+
+        return response()->json([
+            'detail' => $detail,
+        ]);
+    }
+
+    public function get_serapanp()
+    {
+        $detaiQuery = SerapanProdi::query();
+
+        $tahun = request('tahun', 'all');
+
+        if ($tahun !== 'all') {
+            $detaiQuery->where('Tahun', $tahun);
+        }
+
+        $detail = $detaiQuery->get();
+
+        return response()->json([
+            'detail' => $detail,
+        ]);
     }
 
     public function get_id($id)

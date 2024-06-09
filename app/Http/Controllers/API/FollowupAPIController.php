@@ -14,6 +14,7 @@ class FollowupAPIController extends Controller
             ->selectRaw('id_company, MAX(id) as id, MAX(via) as via, MAX(followup_result) as followup_result, MAX(followup_date) as followup_date')
             ->groupBy('id_company')
             ->get();
+        // $followup = Followup::with(['company'])->groupBy('id_company')->get();
         return response()->json([
             'followup' => $followup,
         ]);
@@ -39,7 +40,7 @@ class FollowupAPIController extends Controller
     {
         $followup = Followup::with(['company'])->where('id_company', $id)->get();
         return response()->json([
-            'followup'=>$followup,
+            'followup' => $followup,
         ]);
     }
 }

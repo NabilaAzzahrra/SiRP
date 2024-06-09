@@ -14,6 +14,7 @@ class Recruitment extends Model
         'id_company',
         'position_required',
         'qualification',
+        'availability',
     ];
 
     protected $table = 'recruitment';

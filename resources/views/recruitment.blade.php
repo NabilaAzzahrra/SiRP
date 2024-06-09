@@ -94,7 +94,7 @@
 
         </div>
     </div>
-
+    <input type="hidden" id="account_active" name="account_active" value="{{ Auth::user()->id }}">
     <div class="py-2 bg-white shadow-lg rounded-lg mx-7 p-5">
         <div class="bg-white shadow-lg border-slate-900 border-xl p-4 rounded-lg text-center font-bold mt-3">
             Data Recruitment
@@ -168,9 +168,20 @@
     <script>
         $(document).ready(function() {
             console.log('RUN!');
+            let queryParams = [];
+
+            let account_active = document.getElementById('account_active').value;
+
+            if (account_active !== 'all') {
+                queryParams.push(`account_active=${account_active}`);
+            }
+
+            let queryString = queryParams.join('&');
+
+            urlRegisterProgram = `/api/recruitment?${queryString}`;
             $('#recruitment-datatable').DataTable({
                 ajax: {
-                    url: 'api/recruitment',
+                    url: urlRegisterProgram,
                     dataSrc: 'recruitment'
                 },
                 columns: [{

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Company;
-use App\Models\Student;
+use App\Models\Detail;
+use App\Models\Recruitment;
 use Illuminate\Http\Request;
 
-class SerapanController extends Controller
+class JobController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,21 +15,13 @@ class SerapanController extends Controller
      */
     public function index()
     {
-        $kriteria = request('kriteria', 'all');
-        $tahun = request('tahun', 'all');
+        $recruitment = Recruitment::join('company', 'company.code_company', '=', 'recruitment.id_company')
+        ->select('*')
+        ->get();
 
-        $tahun = Student::select('class_year')
-            ->GroupBy('class_year')
-            ->get();
-
-        $kriteriaStart = ($kriteria === 'all') ? 'Semua Kriteria' : $kriteria;
-        $tahunEnd = ($tahun === 'all') ? 'Semua Tahun' : $tahun;
-
-        return view('serapan.index')->with([
-            'tahun' => $tahun,
-
-            'kriteriaStart' => $kriteriaStart,
-            'tahunEnd' => $tahunEnd,
+        // $recruitment = Recruitment::all();
+        return view('student_role.job')->with([
+            'recruitment' => $recruitment,
         ]);
     }
 
@@ -51,7 +43,16 @@ class SerapanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = [
+            'result' => "BELUM",
+            'status' => "KANDIDAT",
+            'code' => $request->input('code'),
+            'nim' => $request->input('nim'),
+        ];
+
+        Detail::create($data);
+
+        return back()->with('message_delete','Berhasil Apply');
     }
 
     /**

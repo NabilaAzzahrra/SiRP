@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Jurusan') }}
+            {{ __('Follow Up') }}
         </h2>
     </x-slot>
 
@@ -95,6 +95,8 @@
 
         </div>
     </div>
+
+    <input type="hidden" id="account_active" name="account_active" value="{{ Auth::user()->id }}">
 
     <div class="py-2">
         <div class="px-2 max-w-7sm gap-8 justify-center mx-auto sm:px-6 lg:px-8 md:flex lg:flex">
@@ -321,10 +323,21 @@
     <script>
         $(document).ready(function() {
             console.log('RUN!');
+            let queryParams = [];
+
+            let account_active = document.getElementById('account_active').value;
+
+            if (account_active !== 'all') {
+                queryParams.push(`account_active=${account_active}`);
+            }
+
+            let queryString = queryParams.join('&');
+
+            urlRegisterProgram = `/api/company?${queryString}`;
             $('#followup-datatable').DataTable({
                 ajax: {
-                    url: 'api/followup',
-                    dataSrc: 'followup'
+                    url: urlRegisterProgram,
+                    dataSrc: 'company'
                 },
                 columns: [{
                     data: 'no',
@@ -332,16 +345,16 @@
                         return meta.row + 1;
                     }
                 }, {
-                    data: 'company',
+                    data: 'company_name',
                     render: (data, type, row) => {
-                        return data.company_name;
+                        return data;
                     }
                 },{
-                    data: 'company',
+                    data: 'id',
                     render: (data, type, row) => {
                         var linkCompany = "{{route('followup.edit', ':id')}}".replace(
                             ':id',
-                            data.id 
+                            data
                         );
                         let nameCompany = `
                         <div style="display: flex; align-items: center; justify-content: center; height: 100%;">

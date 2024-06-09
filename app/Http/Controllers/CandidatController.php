@@ -128,6 +128,7 @@ class CandidatController extends Controller
         $data = [
             'position_required' => $request->input('position_required'),
             'qualification' => $request->input('qualification'),
+            'availability' => $request->input('availability'),
         ];
 
         $recruitment = Recruitment::findOrFail($id);

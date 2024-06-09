@@ -123,7 +123,7 @@
                 <div class="my-4">
 
                     <div class="flex gap-4 my-4">
-                        <input type="text" id="code_company" name="code_company"
+                        <input type="hidden" id="code_company" name="code_company"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Masukan Kode...." value="{{ $kode_company }}" />
                         <div class="w-full">

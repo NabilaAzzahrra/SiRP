@@ -37,6 +37,8 @@ Route::get('/recruitment/{id}', [RecruitmentAPIController::class, 'get_code'])->
 // Route::get('/recruitment/{id}/{code}', [RecruitmentAPIController::class, 'get_idcode'])->name('recruitment.get');
 Route::get('/detail/{id}', [DetailAPIController::class, 'get_id'])->name('detail.get');
 Route::get('/recruitment', [RecruitmentAPIController::class, 'get_report'])->name('detail.get');
+Route::get('/detail_bidang', [DetailAPIController::class, 'get_serapanb'])->name('detail.get');
+Route::get('/detail_prodi', [DetailAPIController::class, 'get_serapanp'])->name('detail.get');
 Route::get('/detail', [DetailAPIController::class, 'get_all'])->name('detail.get');
 Route::get('/followup', [FollowupAPIController::class, 'get_report'])->name('detail.get');
 Route::get('/mou', [CompanyAPIController::class, 'get_report'])->name('detail.get');

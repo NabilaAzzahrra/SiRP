@@ -105,9 +105,14 @@
                             {{ __('Hasil Recruitment') }}
                         </x-nav-link>
                     @endcan
-                    {{-- <x-nav-link :href="route('company.index')" :active="request()->routeIs('company')">
-                        {{ __('Company') }}
-                    </x-nav-link> --}}
+                    @can('role-M')
+                        <x-nav-link :href="route('job.index')" :active="request()->routeIs('job')">
+                            {{ __('Job Vacancy') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('job.index')" :active="request()->routeIs('job')">
+                            {{ __('Informations') }}
+                        </x-nav-link>
+                    @endcan
                 </div>
             </div>
 

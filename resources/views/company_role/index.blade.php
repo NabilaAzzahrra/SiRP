@@ -142,10 +142,23 @@
                                 id="" placeholder="Masukan Kualifikasi...">
                         </div>
                     </div>
+                    <div class="p-4 space-y-6">
+                        <div>
+                            <label for="availability"
+                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Ketersediaan Lowongan
+                                <span class="text-red-500">*</span></label>
+                            <select class="js-example-placeholder-single w-[926px]" id="availability"
+                                name="availability" data-placeholder="Pilih Program Studi">
+                                <option value="">Pilih...</option>
+                                <option value="AVAILABLE">TERSEDIA</option>
+                                <option value="NOT AVAILABLE">TIDAK TERSEDIA</option>
+                            </select><br>
+                        </div>
+                    </div>
                     <div class="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
                         <button type="submit" id="formSourceButton"
                             class="bg-green-400 m-2 w-40 h-10 rounded-xl hover:bg-green-500">Simpan</button>
-                        <button type="button" data-modal-target="sourceModal" onclick="changeSourceModal(this)"
+                        <button type="button" data-modal-target="sourceModal" onclick="sourceModalClose(this)"
                             class="bg-red-500 m-2 w-40 h-10 rounded-xl text-white hover:shadow-lg hover:bg-red-600">Batal</button>
                     </div>
                 </form>
@@ -202,7 +215,7 @@
                                 render: (data) => {
                                     let editUrl =
                                         `<button type="button" data-id="${data.id}"
-                                                data-modal-target="sourceModal" data-position_required="${data.position_required}" data-qualification="${data.qualification}"
+                                                data-modal-target="sourceModal" data-position_required="${data.position_required}" data-qualification="${data.qualification}" data-availability="${data.availability}"
                                                 onclick="editSourceModal(this)"
                                                 class="bg-amber-500 hover:bg-amber-600 px-3 py-1 rounded-md text-xs text-white">
                                                <i class="fas fa-edit"></i>
@@ -269,11 +282,15 @@
                 const id = button.dataset.id;
                 const position_required = button.dataset.position_required;
                 const qualification = button.dataset.qualification;
+                const availability = button.dataset.availability;
                 let url = "{{ route('candidat.update', ':id') }}".replace(':id', id);
                 let status = document.getElementById(modalTarget);
                 document.getElementById('title_source').innerText = `Update Lowongan Kerja`;
                 document.getElementById('position_required').value = position_required;
                 document.getElementById('qualification').value = qualification;
+                document.querySelector('[name="availability"]').value = availability;
+                let event = new Event('change');
+                document.querySelector('[name="availability"]').dispatchEvent(event);
                 document.getElementById('formSourceButton').innerText = 'Simpan';
                 document.getElementById('formSourceModal').setAttribute('action', url);
                 let csrfToken = document.createElement('input');
@@ -316,6 +333,12 @@
                     .replace(':code', code);
 
                 window.location.href = url;
+            }
+
+            const sourceModalClose = (button) => {
+                const modalTarget = button.dataset.modalTarget;
+                let status = document.getElementById(modalTarget);
+                status.classList.toggle('hidden');
             }
         </script>
     @endpush

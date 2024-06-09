@@ -25,6 +25,7 @@ class Company extends Model
         'mou',
         'relation',
         'kode_pos',
+        'account_active',
     ];
 
     protected $table = 'company';
@@ -40,10 +41,15 @@ class Company extends Model
     public static function createCode()
     {
         $latestCode = self::orderBy('code_company', 'desc')->value('code_company');
-        $latestCodeNumber = intval(substr($latestCode, 2)); 
-        $nextCodeNumber = $latestCodeNumber ? $latestCodeNumber + 1 : 1; 
-        $formattedCodeNumber = sprintf("%05d", $nextCodeNumber); 
+        $latestCodeNumber = intval(substr($latestCode, 2));
+        $nextCodeNumber = $latestCodeNumber ? $latestCodeNumber + 1 : 1;
+        $formattedCodeNumber = sprintf("%05d", $nextCodeNumber);
         return 'CP' . $formattedCodeNumber;
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'account_active', 'id');
     }
 
 }

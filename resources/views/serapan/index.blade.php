@@ -11,43 +11,54 @@
             <div class="bg-white my-2 overflow-hidden shadow-lg w-full rounded-lg lg:rounded-lg md:rounded-lg">
 
                 <div class="p-4 text-gray-900 w-full">
-                    <div class="bg-slate-100 shadow-2xl border-slate-900 border-xl p-4 rounded-lg ">
+                    <div class="bg-slate-100 shadow-2xl mb-8 border-slate-900 border-xl p-4 rounded-lg ">
                         <div class="flex justify-between">
                             <div class="p-2">
-                                <h2>SERAPAN</h2>
+                                <h2>
+                                    Serapan
+                                    <span id="filter_kriteria" class="font-bold"></span>
+                                    /Tahun
+                                    <span id="filter_tahun" class="font-bold"></span>
+                                </h2>
                             </div>
                             <div>
                                 <button onclick="filter(this)" data-modal-target="sourceModal"
                                     class="bg-sky-400 py-2 px-4 rounded-lg text-white hover:bg-sky-500"><i
                                         class="fa-solid fa-filter"></i></button>
-                                <button onclick="exportExcel()"
-                                    class="bg-amber-400 py-2 px-4 rounded-lg text-white hover:bg-amber-500"><i
-                                        class="fa-solid fa-file-excel"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="flex justify-center">
-                        <div class="" style="width:100%">
-                            <table class="table table-bordered" id="detail-datatable">
-                                <thead>
+                    <div class="w-full flex justify-center">
+
+
+                        <div class="w-full relative">
+                            <table class="w-full text-sm text-left rtl:text-right text-gray-500" id="serapan-datatable">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                                     <tr>
-                                        <th class="w-7">No.</th>
-                                        <th>Perusahaan</th>
-                                        <th>Bidang</th>
-                                        <th>Kota</th>
-                                        <th>PIC</th>
-                                        <th>No Telepon</th>
-                                        <th>Posisi</th>
-                                        <th>Tanggal</th>
-                                        <th>NIM</th>
-                                        <th>Nama Kandidat</th>
-                                        <th>Hasil</th>
-                                        <th>Status</th>
-                                        <th>Keterangan</th>
+                                        <th scope="col" class="px-6 py-3">
+                                            No.
+                                        </th>
+                                        <th scope="col" id="head_kriteria" class="px-6 py-3">
+                                            #
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Jumlah
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Tahun
+                                        </th>
                                     </tr>
                                 </thead>
+                                <tbody>
+                                    <tr class="bg-white">
+                                        <td class="px-6 py-4 text-center" colspan="4">
+                                            Data Tidak ditemukan.
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -59,7 +70,7 @@
                     <div class="w-full md:w-1/2 relative bg-white rounded-lg shadow mx-5">
                         <div class="flex items-start justify-between p-4 border-b rounded-t">
                             <h3 class="text-xl font-semibold text-gray-900" id="title_source">
-                                Filter Tanggal Recruitment
+                                Filter Serapan
                             </h3>
                             <button type="button" onclick="sourceModalClose(this)" data-modal-target="sourceModal"
                                 class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center"
@@ -69,18 +80,24 @@
                         </div>
                         <div class="flex flex-col p-4 space-y-6">
                             <div>
-                                <label for="from_date" class="block mb-2 text-sm font-medium text-gray-900">Dari
-                                    Tanggal</label>
-                                <input type="date" id="from_date" name="from_date"
-                                    class="px-3 py-2 border shadow rounded w-full block text-sm placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 invalid:text-pink-700 invalid:focus:ring-pink-700 invalid:focus:border-pink-700 peer hover:shadow-lg"
-                                    placeholder="Masukan tanggal awal disini...">
+                                <label for="from_date"
+                                    class="block mb-2 text-sm font-medium text-gray-900">Kriteria</label>
+                                <select class="js-example-placeholder-single js-states form-control w-[840px] m-6"
+                                    name="kriteria" id="kriteria" data-placeholder="Pilih Kriteria">
+                                    <option value="">Pilih...</option>
+                                    <option value="Bidang">Bidang</option>
+                                    <option value="Prodi">Prodi</option>
+                                </select>
                             </div>
                             <div>
-                                <label for="to_date" class="block mb-2 text-sm font-medium text-gray-900">Sampai
-                                    Tanggal</label>
-                                <input type="date" id="to_date" name="to_date"
-                                    class="px-3 py-2 border shadow rounded w-full block text-sm placeholder:text-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-500 focus:border-sky-500 invalid:text-pink-700 invalid:focus:ring-pink-700 invalid:focus:border-pink-700 peer hover:shadow-lg"
-                                    placeholder="Masukan tanggal akhir disini...">
+                                <label for="to_date" class="block mb-2 text-sm font-medium text-gray-900">Tahun</label>
+                                <select class="js-example-placeholder-single js-states form-control w-[840px] m-6"
+                                    name="tahun" id="tahun" data-placeholder="Pilih Tahun">
+                                    <option value="">Pilih...</option>
+                                    @foreach ($tahun as $t)
+                                        <option value="{{ $t->class_year }}">{{ $t->class_year }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="flex items-center p-4 space-x-2 border-t border-gray-200 rounded-b">
@@ -96,136 +113,140 @@
         </div>
     </div>
     @push('scripts')
-        <script src="{{ asset('js/exceljs.min.js') }}"></script>
         <script>
             var dataNabil;
             let dataTableDataRegisterProgramInstance;
             let dataTableDataRegisterProgramInitialized = false;
             let urlItemDetail =
-                `/api/detail`;
+                `/api/detail_bidang`;
+            let urlTheme;
         </script>
         <script>
             const changeFilterDataRegisterProgram = () => {
                 let queryParams = [];
 
-                let fromDate = document.getElementById('from_date').value;
-                let toDate = document.getElementById('to_date').value;
+                let kriteria = document.getElementById('kriteria').value;
+                let tahun = document.getElementById('tahun').value;
+                document.getElementById('filter_kriteria').innerText = kriteria;
+                document.getElementById('filter_tahun').innerText = tahun;
 
-                if (fromDate !== 'all' && toDate !== 'all') {
-                    queryParams.push(`fromDate=${fromDate}`);
-                    queryParams.push(`toDate=${toDate}`);
+                document.getElementById('filter_kriteria').innerText = kriteria;
+                document.getElementById('filter_tahun').innerText = tahun;
+
+                document.getElementById('head_kriteria').innerText = kriteria;
+
+                if (tahun !== 'all') {
+                    // queryParams.push(`kriteria=${kriteria}`);
+                    queryParams.push(`tahun=${tahun}`);
                 }
 
                 let queryString = queryParams.join('&');
 
-                urlItemDetail = `/api/detail?${queryString}`;
+                // urlItemDetail = `/api/detail_bidang?${queryString}`;
 
+                if (kriteria === 'Bidang') {
+                    urlTheme = 'Bidang';
+                    urlItemDetail = `/api/detail_bidang?${queryString}`;
+                } else {
+                    urlTheme = 'Prodi';
+                    urlItemDetail = `/api/detail_prodi?${queryString}`;
+                }
                 if (dataTableDataRegisterProgramInstance) {
                     dataTableDataRegisterProgramInstance.clear();
                     dataTableDataRegisterProgramInstance.destroy();
                     getDataTableRegisterProgram()
                         .then((response) => {
-                            dataTableDataRegisterProgramInstance = $('#detail-datatable').DataTable(response.config);
+                            console.log(response)
+                            dataTableDataRegisterProgramInstance = $('#serapan-datatable').DataTable(response
+                                .config);
                             dataTableDataRegisterProgramInitialized = response.initialized;
                             document.getElementById('sourceModal').classList.add('hidden');
+
+
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                } else {
+                    getDataTableRegisterProgram()
+                        .then((response) => {
+                            console.log(response)
+                            dataTableDataRegisterProgramInstance = $('#serapan-datatable').DataTable(response
+                                .config);
+                            dataTableDataRegisterProgramInitialized = response.initialized;
+                            document.getElementById('sourceModal').classList.add('hidden');
+
+
                         })
                         .catch((error) => {
                             console.log(error);
                         });
                 }
+
+
             }
+
 
             const getDataTableRegisterProgram = async () => {
                 return new Promise(async (resolve, reject) => {
                     try {
+                        console.log(urlItemDetail);
                         const response = await axios.get(urlItemDetail);
                         let registers = response.data.detail;
-                        console.log(registers);
+                        let columnConfigs;
                         dataNabil = registers;
-
-                        let columnConfigs = [{
-                                data: 'no',
-                                render: (data, type, row, meta) => {
-                                    return `<div style="text-align:center">${meta.row + 1}.</div>`;
+                        console.log(urlTheme);
+                        if (urlTheme == 'Bidang') {
+                            columnConfigs = [{
+                                    data: 'no',
+                                    render: (data, type, row, meta) => {
+                                        return `<div style="text-align:center">${meta.row + 1}.</div>`;
+                                    },
                                 },
-                            },
-                            {
-                                data: 'recruitmentreport',
-                                render: (data, type, row) => {
-                                    return data.length > 0 ? data[0].company.company_name :
-                                        'N/A';
-                                }
-                            }, {
-                                data: 'recruitmentreport',
-                                render: (data, type, row) => {
-                                    return `<span class="text-wrap">${data.length > 0 ? data[0].company.sector :
-                                        'N/A'}</span>`;
-                                }
-                            }, {
-                                data: 'recruitmentreport',
-                                render: (data, type, row) => {
-                                    return data.length > 0 ? data[0].company.city :
-                                        'N/A';
-                                }
-                            }, {
-                                data: 'recruitmentreport',
-                                render: (data, type, row) => {
-                                    return data.length > 0 ? data[0].company.pic :
-                                        'N/A';
-                                }
-                            }, {
-                                data: 'recruitmentreport',
-                                render: (data, type, row) => {
-                                    return data.length > 0 ? data[0].company.phone_number :
-                                        'N/A';
-                                }
-                            }, {
-                                data: 'recruitmentreport',
-                                render: (data, type, row) => {
-                                    return data.length > 0 ? data[0].position_required :
-                                        'N/A';
-                                }
-                            }, {
-                                data: 'recruitmentreport',
-                                render: (data, type, row) => {
-                                    if (data.length > 0) {
-                                        const date = new Date(data[0].created_at);
-                                        const day = String(date.getDate()).padStart(2, '0');
-                                        const month = String(date.getMonth() + 1).padStart(2,
-                                            '0'); // Bulan dimulai dari 0
-                                        const year = date.getFullYear();
-                                        return `${day}/${month}/${year}`;
-                                    } else {
-                                        return 'N/A';
+                                {
+                                    data: 'Bidang',
+                                    render: (data, type, row) => {
+                                        return data;
                                     }
-                                }
-                            }, {
-                                data: 'nim',
-                                render: (data, type, row) => {
-                                    return data;
-                                }
-                            }, {
-                                data: 'student',
-                                render: (data, type, row) => {
-                                    return data.student_name;
-                                }
-                            }, {
-                                data: 'result',
-                                render: (data, type, row) => {
-                                    return data;
-                                }
-                            }, {
-                                data: 'status',
-                                render: (data, type, row) => {
-                                    return data;
-                                }
-                            }, {
-                                data: 'information',
-                                render: (data, type, row) => {
-                                    return `<span class="text-wrap">${data}</span>`;
-                                }
-                            },
-                        ];
+                                }, {
+                                    data: 'Jumlah',
+                                    render: (data, type, row) => {
+                                        return data;
+                                    }
+                                }, {
+                                    data: 'Tahun',
+                                    render: (data, type, row) => {
+                                        return data;
+                                    }
+                                },
+                            ];
+                        } else {
+                            columnConfigs = [{
+                                    data: 'no',
+                                    render: (data, type, row, meta) => {
+                                        return `<div style="text-align:center">${meta.row + 1}.</div>`;
+                                    },
+                                },
+                                {
+                                    data: 'Program_studi',
+                                    render: (data, type, row) => {
+                                        return data;
+                                    }
+                                }, {
+                                    data: 'Jumlah',
+                                    render: (data, type, row) => {
+                                        return data;
+                                    }
+                                }, {
+                                    data: 'Tahun',
+                                    render: (data, type, row) => {
+                                        return data;
+                                    }
+                                },
+                            ];
+                        }
+
+
 
                         const dataTableConfig = {
                             data: registers,
@@ -253,33 +274,13 @@
                 });
             }
         </script>
-        <script>
-            const promiseDataRegisterProgram = () => {
-
-                Promise.all([
-                        getDataTableRegisterProgram(),
-                    ])
-                    .then((response) => {
-                        let responseDTRS = response[0];
-                        dataTableDataRegisterProgramInstance = $('#detail-datatable').DataTable(
-                            responseDTRS
-                            .config);
-                        dataTableDataRegisterProgramInitialized = responseDTRS.initialized;
-
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            }
-            promiseDataRegisterProgram();
-        </script>
     @endpush
     <script>
         const filter = (button) => {
             const formModal = document.getElementById('formSourceModal');
             const modalTarget = button.dataset.modalTarget;
 
-            document.getElementById('title_source').innerText = `Filter Tanggal`;
+            document.getElementById('title_source').innerText = `Filter Serapan`;
 
             let modal = document.getElementById(modalTarget);
             modal.classList.remove('hidden');
@@ -290,74 +291,5 @@
             let status = document.getElementById(modalTarget);
             status.classList.toggle('hidden');
         }
-    </script>
-    <script>
-        const exportExcel = async () => {
-            console.log(dataNabil)
-            try {
-                const workbook = new ExcelJS.Workbook();
-                const worksheet = workbook.addWorksheet('Data');
-                let header = ['No', 'Perusahaan', 'Bidang', 'Kota', 'PIC', 'No Telepon', 'Posisi', 'Tanggal', 'NIM',
-                    'Nama Kandidat', 'Hasil', 'Status', 'Keterangan'
-                ];
-                let dataExcel = [
-                    header,
-                ];
-                dataNabil.forEach((data, index) => {
-                    let studentBucket = [];
-                    const date = new Date(data.recruitmentreport[0].created_at);
-                    const day = date.getDate().toString().padStart(2,
-                        '0');
-                    const month = (date.getMonth() + 1).toString().padStart(2,
-                        '0');
-                    const year = date.getFullYear();
-                    const formattedDate = `${day}/${month}/${year}`;
-
-                    function formatDate(dateString) {
-                        const date = new Date(dateString);
-                        const day = String(date.getDate()).padStart(2, '0');
-                        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-                        const year = date.getFullYear();
-                        return `${day}/${month}/${year}`;
-                    }
-
-                    studentBucket.push(
-                        `${index + 1}`,
-                        `${data.recruitmentreport[0].company.company_name}`,
-                        `${data.recruitmentreport[0].company.sector}`,
-                        `${data.recruitmentreport[0].company.city}`,
-                        `${data.recruitmentreport[0].company.pic}`,
-                        `${data.recruitmentreport[0].company.phone_number}`,
-                        `${data.recruitmentreport[0].position_required}`,
-                        `${formatDate(data.recruitmentreport[0].created_at)}`,
-                        `${data.nim}`,
-                        `${data.student.student_name}`,
-                        `${data.result}`,
-                        `${data.status}`,
-                        `${data.information}`,
-                        formattedDate
-                    );
-                    dataExcel.push(studentBucket);
-                });
-
-                worksheet.addRows(dataExcel);
-
-                const blob = await workbook.xlsx.writeBuffer();
-                const blobData = new Blob([blob], {
-                    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                });
-
-                const link = document.createElement('a');
-                link.href = window.URL.createObjectURL(blobData);
-                link.download = `nabilaaa.xlsx`;
-
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        };
     </script>
 </x-app-layout>

@@ -96,9 +96,9 @@
         </div>
     </div>
 
-    <div class="flex">
-        <div class="py-2 bg-white shadow-lg rounded-lg mx-7 p-5 w-2/6">
-            <div class="bg-slate-200 shadow-lg p-4 mt-8 flex items-center justify-center rounded-xl">
+    <div class="flex pb-10">
+        <div class="py-2 bg-white shadow-lg rounded-lg ml-7 mr-3 p-1 w-2/6">
+            <div class="bg-slate-200 shadow-lg mx-4 p-4 mt-8 flex items-center justify-center rounded-xl">
                 <h1 class="font-bold">DATA PERUSAHAAN</h1>
             </div>
             <div class="p-5 mt-2">
@@ -132,7 +132,7 @@
                 </div>
             </div>
         </div>
-        <div class="py-2 bg-white shadow-lg rounded-lg mx-7 p-5 w-full">
+        <div class="py-2 bg-white shadow-lg rounded-lg mr-7  p-5 w-full">
             <div class="bg-slate-300 shadow-lg p-4 mx-20 mt-8 flex items-center justify-center rounded-xl">
                 <h1 class="font-bold">TAMBAH KANDIDAT</h1>
             </div>
@@ -407,7 +407,7 @@
                 var selectedOption = studentElement.options[studentElement.selectedIndex];
                 var baseUrl = $('#base_url').val();
                 var data = selectedOption.value;
-        
+
                 await axios.get(`${baseUrl}/student/student_name/${data}`)
                     .then((response) => {
                         console.log(response);
@@ -419,6 +419,7 @@
                         console.log(error);
                     });
             };
+            
         </script>
     @endpush
 </x-app-layout>

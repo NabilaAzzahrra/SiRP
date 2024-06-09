@@ -193,7 +193,124 @@
             </div>
         </div>
     @endcan
-    
+
+    @can('role-M')
+        <div class="py-8">
+            <div class="px-10 max-w-7sm justify-center gap-10 mx-auto grid grid-cols-2">
+                @foreach ($historyapply as $h)
+                    <div class="bg-white p-5 rounded-3xl w-full shadow-xl hover:shadow-sky-200">
+                        <div class="ml-10 mb-4 mt-4 text-center font-bold text-xl">
+                            {{ $h->company_name }}
+                        </div>
+                        <div class="ml-10 mb-2">
+                            Posisi Lowongan Pekerjaan
+                        </div>
+                        <div class="ml-10 font-bold">
+                            {{ $h->position_required }}
+                        </div>
+                        <div class="ml-10 mb-4">
+                            Apply Tanggal : {{ date('d F Y', strtotime($h->created_at)) }}
+                        </div>
+                        <div class="ml-10 font-bold">
+                            {{ $h->status }}
+                        </div>
+                        @php
+                            if ($h->status == 'KANDIDAT') {
+                                $txw_kandidat = 'text-white shadow-md shadow-slate-500';
+                                $txw_interview = '';
+                                $txb = '';
+                            } elseif ($h->status == 'INTERVIEW') {
+                                $txw_kandidat = '';
+                                $txw_interview = 'text-white shadow-md shadow-slate-500';
+                                $txb = '';
+                            } else {
+                                $txw_kandidat = '';
+                                $txw_interview = '';
+                                $txb = 'text-white shadow-md shadow-slate-500';
+                            }
+
+                            if ($h->status == 'KERJA') {
+                                $text = 'KERJA';
+                            } elseif ($h->status == 'GAGAL') {
+                                $text = 'GAGAL';
+                            } else {
+                                $text = 'BELUM';
+                            }
+
+                        @endphp
+
+                        <div class="flex ml-10 mb-4 justify-center font-bold">
+                            <div class="bg-sky-300 p-2 w-auto rounded-full {{ $txw_kandidat }}">
+                                KANDIDAT
+                            </div>
+                            <div class="bg-sky-300 mt-5 -ml-2 w-10 h-1 flex items-center justify-center"></div>
+                            <div class="bg-sky-300 p-2 -ml-1 w-auto rounded-full {{ $txw_interview }}">
+                                INTERVIEW
+                            </div>
+                            <div class="bg-sky-300 mt-5 -ml-2 w-10 h-1 flex items-center justify-center"></div>
+                            <div class="bg-sky-300 w-24 -ml-1 p-2 rounded-full text-center {{ $txb }}">
+                                {{ $text }}
+                            </div>
+                        </div>
+
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    @endcan
+
+    @can('role-P')
+        <div class="py-8">
+            <div class="px-10 max-w-7sm justify-center gap-10 mx-auto">
+                <div class="bg-white my-2 overflow-hidden shadow-lg w-full rounded-lg lg:rounded-lg md:rounded-lg">
+                    <div class="p-4 text-gray-900 w-full">
+                        <div class="bg-slate-100 shadow-2xl border-slate-900 border-xl p-4 rounded-lg ">
+                            @php
+                                $month = date('F');
+                                $bulan = '';
+                                if ($month == 'January') {
+                                    $bulan = 'Januari';
+                                } elseif ($month == 'February') {
+                                    $bulan = 'Februari';
+                                } elseif ($month == 'March') {
+                                    $bulan = 'Maret';
+                                } elseif ($month == 'April') {
+                                    $bulan = 'April';
+                                } elseif ($month == 'May') {
+                                    $bulan = 'Mei';
+                                } elseif ($month == 'June') {
+                                    $bulan = 'Juni';
+                                } elseif ($month == 'July') {
+                                    $bulan = 'Juli';
+                                } elseif ($month == 'August') {
+                                    $bulan = 'Agustus';
+                                } elseif ($month == 'September') {
+                                    $bulan = 'September';
+                                } elseif ($month == 'October') {
+                                    $bulan = 'Oktober';
+                                } elseif ($month == 'November') {
+                                    $bulan = 'November';
+                                } elseif ($month == 'December') {
+                                    $bulan = 'Desember';
+                                } else {
+                                    $bulan = 'Bulan tidak valid';
+                                }
+
+                            @endphp
+                            <h2>Recruitment Pegawai Bulan <span class="font-bold">{{ $bulan }}</span>
+                            </h2>
+                        </div>
+                        <div class="flex justify-center">
+                            <div class="text-sm text-white font-bold p-12" style="width:100%">
+                                <canvas id="myBarChartCompany"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endcan
+
     @can('role-A')
         <script>
             var ctx = document.getElementById('myPieChart').getContext('2d');
@@ -212,8 +329,11 @@
         </script>
         <script>
             // Data untuk chart
+            var sectors = @json($sectors);
+            var rec = @json($rec);
+
             var data = {
-                labels: ["Manufaktur", "Pendidikan", "Keuangan", "Teknologi Informasi"],
+                labels: sectors,
                 datasets: [{
                     label: "Data Recruitment",
                     backgroundColor: ["rgba(75,192,192,0.2)", "rgba(255,99,132,0.2)", "rgba(255,205,86,0.2)",
@@ -223,7 +343,7 @@
                         "rgba(255,205,86,1)"
                     ],
                     borderWidth: 1,
-                    data: [10, 20, 30, 40]
+                    data: rec
                 }]
             };
 
@@ -245,4 +365,45 @@
             });
         </script>
     @endcan
+
+    @can('role-P')
+        <script>
+            // Data untuk chart
+            var posisi = @json($posisi);
+            var rec = @json($lolos);
+
+            var data = {
+                labels: posisi,
+                datasets: [{
+                        label: "Data Recruitment",
+                        backgroundColor: ["rgba(75,192,192,0.2)", "rgba(255,99,132,0.2)", "rgba(255,205,86,0.2)",
+                            "rgba(255,205,86,0.2)"
+                        ],
+                        borderColor: ["rgba(75,192,192,1)", "rgba(255,99,132,1)", "rgba(255,205,86,1)",
+                            "rgba(255,205,86,1)"
+                        ],
+                        borderWidth: 1,
+                        data: lolos
+                    }]
+            };
+
+            // Konfigurasi chart
+            var options = {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            };
+
+            // Inisialisasi chart
+            var ctx = document.getElementById('myBarChartCompany').getContext('2d');
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: data,
+                options: options
+            });
+        </script>
+    @endcan
+
 </x-app-layout>

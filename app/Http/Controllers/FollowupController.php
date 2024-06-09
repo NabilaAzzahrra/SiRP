@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Company;
 use App\Models\Followup;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class FollowupController extends Controller
 {
@@ -15,7 +16,7 @@ class FollowupController extends Controller
      */
     public function index()
     {
-        $company = Company::all();
+        $company = Company::where('account_active', Auth::user()->id)->get();
         $followup = Followup::all()->groupBy('id_company');
         // $company = Company::where('id', $id)->get();
         // $company = Company::where('id', $id)->first();

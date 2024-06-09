@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->char('role');
             $table->string('id_company');
+            $table->string('nim');
             $table->rememberToken();
             $table->timestamps();
         });
